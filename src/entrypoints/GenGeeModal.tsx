@@ -26,16 +26,10 @@ export default function GenGeeModal({ ctx }: PropTypes) {
   }
 
   const handleDownload = () => {
-    //if (downloadRef.current !== null)
-    //downloadRef.current.click()
-    f.src = URL.createObjectURL(
-      new Blob([
-        t.value
-      ], {
-        type: "text/html"
-      })
-    )
+    if (downloadRef.current !== null)
+      downloadRef.current.click()
   }
+
   const handleSelectImage = async (id: string) => {
     const upload = await ctx.selectUpload({ multiple: false })
     if (upload)
