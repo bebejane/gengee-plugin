@@ -25,9 +25,20 @@ export default function GenGeeModal({ ctx }: PropTypes) {
     setForm(form.map(el => ({ ...el, value: id === el.id ? value : el.value })))
   }
 
-  const handleDownload = () => {
-    if (downloadRef.current !== null)
-      downloadRef.current.click()
+  const handleDownload = async () => {
+    //if (downloadRef.current !== null)
+    //downloadRef.current.click()
+    console.log(src);
+
+    const blob = await fetch(src as string).then(res => res.blob());
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "myImage.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
   }
 
   const handleSelectImage = async (id: string) => {
