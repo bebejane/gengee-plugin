@@ -47,6 +47,28 @@
       height: 100%;
       max-height: 500px;
       overflow-y: scroll;
+
+      .imageSelector {
+        display: flex;
+        flex-direction: row;
+
+        div {
+          width: 50px;
+          height: 50px;
+          background-color: var(--light-bg-color);
+          border: 2px solid var(--darker-border-color);
+          margin-right: 5px;
+
+          img {
+            max-width: 50px;
+            max-height: 50px;
+            min-width: 50px;
+            min-height: 50px;
+            object-fit: cover;
+
+          }
+        }
+      }
     }
   }
 
@@ -60,32 +82,6 @@
       &:last-child {
         margin-right: 0;
       }
-    }
-  }
-}
-
-.download {
-  display: none;
-}
-
-.imageSelector {
-  display: flex;
-  flex-direction: row;
-
-  div {
-    width: 50px;
-    height: 50px;
-    background-color: var(--light-bg-color);
-    border: 2px solid var(--darker-border-color);
-    margin-right: 5px;
-
-    img {
-      max-width: 50px;
-      max-height: 50px;
-      min-width: 50px;
-      min-height: 50px;
-      object-fit: cover;
-
     }
   }
 }

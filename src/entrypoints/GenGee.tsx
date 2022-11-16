@@ -9,24 +9,28 @@ type PropTypes = {
 export default function GenGee({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters;
+  const { template, json, width, height, buttonLabel } = parameters
 
   const handleOpenModal = async () => {
-
     try {
 
-      if (parameters.json === undefined || !parameters.template || !parameters.width || !parameters.height)
+      if (json === undefined || !template || !width || !height)
         throw new Error('Plugin not configured correctly!');
 
-      const json = parameters.json !== undefined ? JSON.parse(parameters.json) : []
+      const savedJson = ctx.item?.attributes[ctx.field.attributes.api_key] as string
+      const jsonData = JSON.parse(savedJson || parameters.json || '[]')
 
       const result = await ctx.openModal({
         id: 'gengeeModal',
         title: 'Social image',
         width: 'xl',
-        parameters: { ...parameters, json }
+        closeDisabled: false,
+        parameters: { ...parameters, json: jsonData }
       });
 
-      ctx.notice(result as string);
+      if (result)
+        ctx.setFieldValue(ctx.field.attributes.api_key, JSON.stringify(result))
+
     } catch (err) {
       ctx.alert((err as Error).message)
     }
@@ -35,7 +39,7 @@ export default function GenGee({ ctx }: PropTypes) {
   return (
     <Canvas ctx={ctx}>
       <Button type="button" onClick={handleOpenModal}>
-        {parameters.buttonLabel || 'Generate'}
+        {buttonLabel || 'Generate Image'}
       </Button>
     </Canvas>
   );
