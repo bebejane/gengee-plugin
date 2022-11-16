@@ -6,8 +6,9 @@ import ConfigScreen from './entrypoints/ConfigScreen';
 import GenGeeConfigScreen from './entrypoints/GenGeeConfigScreen';
 import GenGee from './entrypoints/GenGee'
 import GenGeeModal from './entrypoints/GenGeeModal'
-
 import 'datocms-react-ui/styles.css';
+
+const isDev = document.location.hostname === 'localhost';
 
 connect({
   renderConfigScreen(ctx) {
@@ -17,7 +18,7 @@ connect({
     return [
       {
         id: 'gengee',
-        name: 'Gen-Gee',
+        name: 'Gen-Gee' + (isDev ? ' (dev)' : ''),
         type: 'editor',
         fieldTypes: ['json'],
         configurable: true
