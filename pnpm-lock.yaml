@@ -11,6 +11,7 @@ specifiers:
   react: ^18.2.0
   react-dom: ^18.2.0
   react-scripts: 5.0.1
+  react-spinners: ^0.13.6
   rooks: ^7.4.2
   sass: ^1.56.1
   typescript: ^4.8.4
@@ -26,6 +27,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-scripts: 5.0.1_dv7pggdiilwiktrjox7ia7t5ra
+  react-spinners: 0.13.6_biqbaboplfbrettd7655fr4n2y
   rooks: 7.4.2_biqbaboplfbrettd7655fr4n2y
   sass: 1.56.1
   typescript: 4.8.4
@@ -8272,6 +8274,16 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/react'
+    dev: false
+
+  /react-spinners/0.13.6_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-+VoSs1wN6oMhJy7PzCPiHUt6zUi9fvnGQizem8q/NzXhGovbdXFDWNhspk6KEKXQEafInUtpvtDlp/zJ5sES/A==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-transition-group/4.4.5_biqbaboplfbrettd7655fr4n2y:

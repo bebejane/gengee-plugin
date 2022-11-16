@@ -14,8 +14,8 @@ export default function GenGee({ ctx }: PropTypes) {
 
     try {
 
-      if (parameters.json === undefined || !parameters.template)
-        throw new Error('Plugin not configured');
+      if (parameters.json === undefined || !parameters.template || !parameters.width || !parameters.height)
+        throw new Error('Plugin not configured correctly!');
 
       const json = parameters.json !== undefined ? JSON.parse(parameters.json) : []
 
@@ -30,8 +30,7 @@ export default function GenGee({ ctx }: PropTypes) {
     } catch (err) {
       ctx.alert((err as Error).message)
     }
-
-  };
+  }
 
   return (
     <Canvas ctx={ctx}>

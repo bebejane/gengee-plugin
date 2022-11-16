@@ -1,7 +1,7 @@
 import s from './GenGeeConfigScreen.module.scss'
 import cn from 'classnames'
 import { RenderManualFieldExtensionConfigScreenCtx } from 'datocms-plugin-sdk';
-import { Canvas, Form, TextField, SwitchField } from 'datocms-react-ui';
+import { Canvas, Form, TextField } from 'datocms-react-ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export type PropTypes = {
@@ -57,12 +57,27 @@ export default function GenGeeConfigScreen({ ctx }: PropTypes) {
           value={formValues.template}
           onChange={(template) => saveParameter('template', template)}
         />
+
         <TextField
           id="button-label"
           name="button-label"
           label="Button label"
           value={formValues.buttonLabel}
           onChange={(value) => saveParameter('buttonLabel', value)}
+        />
+        <TextField
+          id="width"
+          name="width"
+          label="Width"
+          value={formValues.width}
+          onChange={(value) => saveParameter('width', value)}
+        />
+        <TextField
+          id="height"
+          name="height"
+          label="Height"
+          value={formValues.height}
+          onChange={(value) => saveParameter('height', value)}
         />
         <label htmlFor="json">Parameters</label>
         <textarea

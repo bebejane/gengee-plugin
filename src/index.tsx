@@ -1,14 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { connect, IntentCtx, RenderManualFieldExtensionConfigScreenCtx, RenderFieldExtensionCtx, RenderModalCtx } from 'datocms-plugin-sdk';
+import {
+  connect,
+  IntentCtx,
+  RenderManualFieldExtensionConfigScreenCtx,
+  RenderFieldExtensionCtx,
+  RenderModalCtx
+} from 'datocms-plugin-sdk';
 import { render } from './utils/render';
 import ConfigScreen from './entrypoints/ConfigScreen';
 import GenGeeConfigScreen from './entrypoints/GenGeeConfigScreen';
 import GenGee from './entrypoints/GenGee'
 import GenGeeModal from './entrypoints/GenGeeModal'
 import 'datocms-react-ui/styles.css';
-
-const isDev = document.location.hostname === 'localhost';
+import { isDev } from './utils'
 
 connect({
   renderConfigScreen(ctx) {

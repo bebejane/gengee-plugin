@@ -8,5 +8,7 @@ type FormItem = {
 type ConfigParameters = {
   template: string | undefined,
   json: string | undefined,
-  buttonLabel: string
+  buttonLabel: string,
+  width: string,
+  height: string
 };

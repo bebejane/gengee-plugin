@@ -4,6 +4,8 @@ import { Canvas, Button, Form, TextField, SelectField } from 'datocms-react-ui';
 import { generateSourceUrl } from '../utils';
 import { useState, useRef, useEffect } from 'react';
 import { useDebounce } from 'usehooks-ts';
+import Loader from "react-spinners/MoonLoader";
+
 
 export type PropTypes = {
   ctx: RenderModalCtx;
@@ -12,33 +14,28 @@ export type PropTypes = {
 export default function GenGeeModal({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters
-  const { template } = parameters;
+  const { template, width, height } = parameters;
+
   const json = (parameters.json ? parameters.json : []) as FormItem[]
-
   const [src, setSrc] = useState<string | undefined>();
-  const imageSrc = useDebounce<string | undefined>(src, 400)
-
   const [form, setForm] = useState(json || []);
-  const downloadRef = useRef<HTMLAnchorElement | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  const imageSrc = useDebounce<string | undefined>(src, 400)
 
   const handleChange = (id: string, value: string) => {
     setForm(form.map(el => ({ ...el, value: id === el.id ? value : el.value })))
   }
 
   const handleDownload = async () => {
-    //if (downloadRef.current !== null)
-    //downloadRef.current.click()
-    console.log(src);
-
     const blob = await fetch(src as string).then(res => res.blob());
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "myImage.png";
+    a.download = parameters.buttonLabel ? `${parameters.buttonLabel}.png` : 'Image.png';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-
   }
 
   const handleSelectImage = async (id: string) => {
@@ -51,16 +48,24 @@ export default function GenGeeModal({ ctx }: PropTypes) {
     if (template === undefined) return
     const src = generateSourceUrl(template, {
       values: form.reduce((prev, curr) => ({ ...prev, [curr.id]: curr.value }), {})
-    })
+    }, { width, height })
+    setLoading(true)
     setSrc(src)
-  }, [form, template])
+
+  }, [form, template, width, height])
 
   return (
     <Canvas ctx={ctx}>
       <div className={s.modal}>
         <div className={s.editor}>
           <figure>
-            <img src={imageSrc} />
+            <img src={imageSrc} onLoad={() => setLoading(false)} />
+
+            {loading &&
+              <div className={s.loading}>
+                <Loader color={'#ffffff'} size={20} />
+              </div>
+            }
           </figure>
           <div className={s.config}>
             <Form>
@@ -92,14 +97,6 @@ export default function GenGeeModal({ ctx }: PropTypes) {
         <div className={s.buttons}>
           <Button fullWidth={true} onClick={handleDownload}>Download</Button>
         </div>
-        <a
-          ref={downloadRef}
-          className={s.download}
-          href={src}
-          download="Fin-bild.png"
-          rel="noreferrer"
-          target={'_blank'}
-        >download</a>
       </div>
     </Canvas>
   );
