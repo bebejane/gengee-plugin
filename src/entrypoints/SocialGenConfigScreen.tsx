@@ -1,4 +1,4 @@
-import s from './GenGeeConfigScreen.module.scss'
+import s from './SocialGenConfigScreen.module.scss'
 import cn from 'classnames'
 import { RenderManualFieldExtensionConfigScreenCtx } from 'datocms-plugin-sdk';
 import { Canvas, Form, TextField } from 'datocms-react-ui';
@@ -8,7 +8,7 @@ export type PropTypes = {
   ctx: RenderManualFieldExtensionConfigScreenCtx;
 };
 
-export default function GenGeeConfigScreen({ ctx }: PropTypes) {
+export default function SocialGenConfigScreen({ ctx }: PropTypes) {
 
   const [validJson, setValidJson] = useState(true)
   const jsonRef = useRef<HTMLTextAreaElement | null>(null)

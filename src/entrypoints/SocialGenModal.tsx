@@ -1,4 +1,4 @@
-import s from './GenGeeModal.module.scss'
+import s from './SocialGenModal.module.scss'
 import { RenderModalCtx } from 'datocms-plugin-sdk';
 import { Canvas, Button, Form, TextField } from 'datocms-react-ui';
 import { generateSourceUrl } from '../utils';
@@ -11,7 +11,7 @@ export type PropTypes = {
   ctx: RenderModalCtx;
 };
 
-export default function GenGeeModal({ ctx }: PropTypes) {
+export default function SocialGenModal({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters
   const { template, width, height } = parameters;

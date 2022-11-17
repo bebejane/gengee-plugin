@@ -1,4 +1,4 @@
-import s from './GenGee.module.scss'
+import s from './SocialGen.module.scss'
 import { RenderFieldExtensionCtx } from 'datocms-plugin-sdk';
 import { Canvas, Button } from 'datocms-react-ui';
 
@@ -6,7 +6,7 @@ type PropTypes = {
   ctx: RenderFieldExtensionCtx;
 };
 
-export default function GenGee({ ctx }: PropTypes) {
+export default function SocialGen({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters;
   const { template, json, width, height, buttonLabel } = parameters
@@ -21,7 +21,7 @@ export default function GenGee({ ctx }: PropTypes) {
       const jsonData = JSON.parse(savedJson || parameters.json || '[]')
 
       const result = await ctx.openModal({
-        id: 'gengeeModal',
+        id: 'socialGenModal',
         title: 'Social image',
         width: 'xl',
         closeDisabled: false,

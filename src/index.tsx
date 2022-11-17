@@ -9,9 +9,9 @@ import {
 } from 'datocms-plugin-sdk';
 import { render } from './utils/render';
 import ConfigScreen from './entrypoints/ConfigScreen';
-import GenGeeConfigScreen from './entrypoints/GenGeeConfigScreen';
-import GenGee from './entrypoints/GenGee'
-import GenGeeModal from './entrypoints/GenGeeModal'
+import SocialGenConfigScreen from './entrypoints/SocialGenConfigScreen';
+import SocialGen from './entrypoints/SocialGen'
+import SocialGenModal from './entrypoints/SocialGenModal'
 import 'datocms-react-ui/styles.css';
 import { isDev } from './utils'
 
@@ -22,8 +22,8 @@ connect({
   manualFieldExtensions(ctx: IntentCtx) {
     return [
       {
-        id: 'gengee',
-        name: 'Gen-Gee' + (isDev ? ' (dev)' : ''),
+        id: 'social-gen',
+        name: 'Social-Gen' + (isDev ? ' (dev)' : ''),
         type: 'editor',
         fieldTypes: ['json'],
         configurable: true
@@ -32,22 +32,22 @@ connect({
   },
   renderFieldExtension(fieldExtensionId: string, ctx: RenderFieldExtensionCtx) {
     switch (fieldExtensionId) {
-      case 'gengee':
-        return render(<GenGee ctx={ctx} />);
+      case 'social-gen':
+        return render(<SocialGen ctx={ctx} />);
     }
   },
   renderManualFieldExtensionConfigScreen(fieldExtensionId: string, ctx: RenderManualFieldExtensionConfigScreenCtx) {
     ReactDOM.render(
       <React.StrictMode>
-        <GenGeeConfigScreen ctx={ctx} />
+        <SocialGenConfigScreen ctx={ctx} />
       </React.StrictMode>,
       document.getElementById('root'),
     );
   },
   renderModal(modalId: string, ctx: RenderModalCtx) {
     switch (modalId) {
-      case 'gengeeModal':
-        return render(<GenGeeModal ctx={ctx} />);
+      case 'socialGenModal':
+        return render(<SocialGenModal ctx={ctx} />);
     }
   },
 });
