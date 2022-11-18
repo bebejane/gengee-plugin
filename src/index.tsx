@@ -7,12 +7,13 @@ import {
   RenderFieldExtensionCtx,
   RenderModalCtx
 } from 'datocms-plugin-sdk';
+import 'datocms-react-ui/styles.css';
 import { render } from './utils/render';
 import ConfigScreen from './entrypoints/ConfigScreen';
 import SocialGenConfigScreen from './entrypoints/SocialGenConfigScreen';
 import SocialGen from './entrypoints/SocialGen'
 import SocialGenModal from './entrypoints/SocialGenModal'
-import 'datocms-react-ui/styles.css';
+
 import { isDev } from './utils'
 
 connect({

@@ -1,8 +1,9 @@
 import s from './SocialGenConfigScreen.module.scss'
 import cn from 'classnames'
 import { RenderManualFieldExtensionConfigScreenCtx } from 'datocms-plugin-sdk';
-import { Canvas, Form, TextField } from 'datocms-react-ui';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Canvas, Form, TextField, SelectField, SelectInput } from 'datocms-react-ui';
+import { useCallback, useEffect, useState } from 'react';
+import { baseUrl } from '../utils';
 
 export type PropTypes = {
   ctx: RenderManualFieldExtensionConfigScreenCtx;
@@ -10,60 +11,43 @@ export type PropTypes = {
 
 export default function SocialGenConfigScreen({ ctx }: PropTypes) {
 
-  const [validJson, setValidJson] = useState(true)
-  const jsonRef = useRef<HTMLTextAreaElement | null>(null)
+  const [templates, setTemplates] = useState<any[]>([])
   const [formValues, setFormValues] = useState<Partial<ConfigParameters>>(ctx.parameters);
 
   const saveParameter = useCallback((field: string, value: string | boolean) => {
     const newParameters = { ...formValues, [field]: value };
     setFormValues(newParameters);
     ctx.setParameters(newParameters);
-    console.log('saved');
-
   }, [formValues, setFormValues, ctx]);
 
-  const handleJsonText = (evt: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (evt.key !== 'Tab')
-      return
-
-    evt.preventDefault();
-    const target = evt.target as HTMLInputElement;
-    const start = target.selectionStart === null ? target.value.length : target.selectionStart;
-    const end = target.selectionEnd === null ? 0 : target.selectionEnd;
-    target.value = target.value.substring(0, start) + "\t" + target.value.substring(end);
-    target.selectionEnd = start + 1;
-
-  }
-
   useEffect(() => {
-    if (!formValues.json) return
-
-    try {
-      JSON.parse(formValues.json);
-      setValidJson(true)
-      saveParameter('json', formValues.json)
-    } catch (err) {
-      setValidJson(false)
-    }
-  }, [formValues.json])
+    (async () => {
+      try {
+        const res = await fetch(`${baseUrl}/api/template/list`)
+        setTemplates(await res.json())
+      } catch (err) {
+        ctx.alert((err as Error).message)
+      }
+    })()
+  }, [])
+  const templateOptions = templates?.map(({ template: { id: value, name: label } }) => ({ label, value }))
 
   return (
     <Canvas ctx={ctx}>
       <Form>
-        <TextField
-          id="template"
+        <SelectField
           name="template"
+          id="template"
           label="Template"
-          value={formValues.template}
-          onChange={(template) => saveParameter('template', template)}
-        />
-
-        <TextField
-          id="button-label"
-          name="button-label"
-          label="Button label"
-          value={formValues.buttonLabel}
-          onChange={(value) => saveParameter('buttonLabel', value)}
+          value={templateOptions.find(t => t.value === formValues.template)}
+          selectInputProps={{
+            isMulti: false,
+            options: templateOptions,
+          }}
+          onChange={(newValue) => {
+            const template = newValue?.value as string;
+            saveParameter('template', template)
+          }}
         />
         <TextField
           id="width"
@@ -79,18 +63,12 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
           value={formValues.height}
           onChange={(value) => saveParameter('height', value)}
         />
-        <label htmlFor="json">Parameters</label>
-        <textarea
-          className={cn(s.config, !validJson && s.error)}
-          name="json"
-          id="json"
-          cols={30}
-          rows={10}
-          value={formValues.json}
-          defaultValue="{}"
-          spellCheck={false}
-          onKeyDown={handleJsonText}
-          onChange={({ target: { value: json } }) => setFormValues({ ...formValues, json })}
+        <TextField
+          id="button-label"
+          name="button-label"
+          label="Button label"
+          value={formValues.buttonLabel}
+          onChange={(value) => saveParameter('buttonLabel', value)}
         />
       </Form>
     </Canvas>

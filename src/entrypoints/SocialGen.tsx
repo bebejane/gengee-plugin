@@ -9,23 +9,23 @@ type PropTypes = {
 export default function SocialGen({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters;
-  const { template, json, width, height, buttonLabel } = parameters
+  const { template, width, height, buttonLabel } = parameters
 
   const handleOpenModal = async () => {
     try {
 
-      if (json === undefined || !template || !width || !height)
+      if (!template || !width || !height)
         throw new Error('Plugin not configured correctly!');
 
-      const savedJson = ctx.item?.attributes[ctx.field.attributes.api_key] as string
-      const jsonData = JSON.parse(savedJson || parameters.json || '[]')
+      const savedFields = ctx.item?.attributes[ctx.field.attributes.api_key] as string
+      const fields = savedFields ? JSON.parse(savedFields) : undefined
 
       const result = await ctx.openModal({
         id: 'socialGenModal',
         title: 'Social image',
         width: 'xl',
         closeDisabled: false,
-        parameters: { ...parameters, json: jsonData }
+        parameters: { ...parameters, fields }
       });
 
       if (result)

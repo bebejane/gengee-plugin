@@ -1,11 +1,10 @@
 import s from './SocialGenModal.module.scss'
 import { RenderModalCtx } from 'datocms-plugin-sdk';
 import { Canvas, Button, Form, TextField } from 'datocms-react-ui';
-import { generateSourceUrl } from '../utils';
+import { baseUrl, generateSourceUrl } from '../utils';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'usehooks-ts';
 import Loader from "react-spinners/MoonLoader";
-
 
 export type PropTypes = {
   ctx: RenderModalCtx;
@@ -13,18 +12,18 @@ export type PropTypes = {
 
 export default function SocialGenModal({ ctx }: PropTypes) {
 
-  const parameters = ctx.parameters as ConfigParameters
+  const parameters = ctx.parameters as ConfigParameters & { fields: Fields | undefined }
   const { template, width, height } = parameters;
-
-  const json = (parameters.json ? parameters.json : []) as FormItem[]
   const [src, setSrc] = useState<string | undefined>();
   const imageSrc = useDebounce<string | undefined>(src, 400)
-  const [form, setForm] = useState(json || []);
+  const [fields, setFields] = useState<Fields | undefined>();
+  const dFields: Fields | undefined = useDebounce(fields, 400)
+
   const [loading, setLoading] = useState(false)
 
   const handleChange = (id: string, value: string) => {
-    const newForm = form.map(el => ({ ...el, value: id === el.id ? value : el.value }))
-    setForm(newForm)
+    if (fields === undefined) return
+    setFields({ ...fields, [id]: { ...fields[id], value } })
   }
   const handleDownload = async () => {
     const blob = await fetch(src as string).then(res => res.blob());
@@ -39,7 +38,8 @@ export default function SocialGenModal({ ctx }: PropTypes) {
 
   const handleSelectImage = async (id: string) => {
     const upload = await ctx.selectUpload({ multiple: false })
-    if (!upload) return
+    if (!upload)
+      return
     if (!upload.attributes.mime_type?.includes('image'))
       return ctx.alert('File is not an image!')
 
@@ -47,17 +47,35 @@ export default function SocialGenModal({ ctx }: PropTypes) {
   }
 
   useEffect(() => {
-    if (template === undefined)
+    if (template === undefined || dFields === undefined)
       return
 
-    const src = generateSourceUrl(template, {
-      values: form.reduce((prev, curr) => ({ ...prev, [curr.id]: curr.value }), {})
-    }, { width, height })
+    const src = generateSourceUrl(template, { fields: dFields, dimensions: { width, height } })
 
     setLoading(true)
     setSrc(src)
 
-  }, [form, template, width, height])
+  }, [dFields, template, width, height])
+
+
+  useEffect(() => {
+
+    (async () => {
+      try {
+        const templates: any[] = await (await fetch(`${baseUrl}/api/template/list`)).json()
+        const t = templates.find(t => t.template.id === template)
+        if (!t)
+          return ctx.alert(`Template "${template}" not found!"`)
+
+        const mergedFields: Fields = {}
+        Object.keys(t.template.fields).forEach(k => mergedFields[k] = { ...t.template.fields[k], ...parameters.fields?.[k] })
+
+        setFields(mergedFields)
+      } catch (err) {
+        ctx.alert((err as Error).message)
+      }
+    })()
+  }, [template, setFields, ctx, parameters])
 
 
   return (
@@ -68,9 +86,11 @@ export default function SocialGenModal({ ctx }: PropTypes) {
             <img src={imageSrc} onLoad={() => setLoading(false)} onError={() => setLoading(false)} />
             {loading && <div className={s.loading}><Loader color={'#ffffff'} size={20} /></div>}
           </figure>
-          <div className={s.config}>
+          <div className={s.fields}>
             <Form>
-              {form.map(({ type, label, value, id }) => {
+              {fields && Object.keys(fields).map(id => {
+                const { type, label, value } = fields[id]
+
                 switch (type) {
                   case 'text':
                     return <TextField
@@ -98,7 +118,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
           <Button fullWidth={true} onClick={handleDownload} disabled={loading}>
             Download
           </Button>
-          <Button fullWidth={true} onClick={() => ctx.resolve(form)}>
+          <Button fullWidth={true} onClick={() => ctx.resolve(fields)}>
             Save
           </Button>
         </div>

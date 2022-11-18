@@ -1,14 +1,24 @@
 .modal {
+  --height: calc(500px - 1rem);
   display: flex;
   flex-direction: column;
+
 
   .editor {
     display: flex;
     flex-direction: row;
-
-    min-height: 500px;
-    max-height: 500px;
+    min-height: var(--height);
+    max-height: var(--height);
     overflow: hidden;
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      --height: auto;
+
+      figure {
+        margin-bottom: 1rem !important;
+      }
+    }
 
     figure {
       position: relative;
@@ -18,7 +28,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100%;
+      background-color: #000000;
+      height: var(--height);
 
       img {
         width: 100%;
@@ -40,12 +51,12 @@
       }
     }
 
-    .config {
+    .fields {
       flex: 1 1 100%;
       min-height: 100%;
       border: 1px solid var(--light-bg-color);
       height: 100%;
-      max-height: 500px;
+      max-height: var(--height);
       overflow-y: scroll;
 
       .imageSelector {
@@ -75,6 +86,7 @@
   .buttons {
     display: flex;
     flex-direction: row;
+    padding-top: 1rem;
 
     button {
       margin-right: 1rem;
