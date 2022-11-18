@@ -63,12 +63,16 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     (async () => {
       try {
         const templates: any[] = await (await fetch(`${baseUrl}/api/template/list`)).json()
-        const t = templates.find(t => t.template.id === template)
+        const t = templates.find(t => t.config.id === template)
+
         if (!t)
           return ctx.alert(`Template "${template}" not found!"`)
 
         const mergedFields: Fields = {}
-        Object.keys(t.template.fields).forEach(k => mergedFields[k] = { ...t.template.fields[k], ...parameters.fields?.[k] })
+
+        Object.keys(t.config.fields).forEach((k) => {
+          mergedFields[k] = { ...t.config.fields[k], ...parameters.fields?.[k] }
+        })
 
         setFields(mergedFields)
       } catch (err) {

@@ -1,5 +1,3 @@
-import s from './SocialGenConfigScreen.module.scss'
-import cn from 'classnames'
 import { RenderManualFieldExtensionConfigScreenCtx } from 'datocms-plugin-sdk';
 import { Canvas, Form, TextField, SelectField, SelectInput } from 'datocms-react-ui';
 import { useCallback, useEffect, useState } from 'react';
@@ -30,6 +28,7 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
       }
     })()
   }, [])
+
   const templateOptions = templates?.map(({ template: { id: value, name: label } }) => ({ label, value }))
 
   return (
@@ -45,8 +44,7 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
             options: templateOptions,
           }}
           onChange={(newValue) => {
-            const template = newValue?.value as string;
-            saveParameter('template', template)
+            saveParameter('template', newValue?.value as string)
           }}
         />
         <TextField
