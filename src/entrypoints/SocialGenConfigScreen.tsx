@@ -1,5 +1,5 @@
 import { RenderManualFieldExtensionConfigScreenCtx } from 'datocms-plugin-sdk';
-import { Canvas, Form, TextField, SelectField, SelectInput } from 'datocms-react-ui';
+import { Canvas, Form, TextField, SelectField } from 'datocms-react-ui';
 import { useCallback, useEffect, useState } from 'react';
 import { baseUrl } from '../utils';
 
@@ -29,7 +29,7 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
     })()
   }, [])
 
-  const templateOptions = templates?.map(({ template: { id: value, name: label } }) => ({ label, value }))
+  const templateOptions = templates?.map(({ config: { id: value, name: label } }) => ({ label, value }))
 
   return (
     <Canvas ctx={ctx}>
