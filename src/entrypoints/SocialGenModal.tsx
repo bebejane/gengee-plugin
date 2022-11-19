@@ -57,6 +57,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
       return
 
     const src = generateSourceUrl(template, { fields: dFields })
+    console.log(src);
 
     setLoading(true)
     setSrc(src)
@@ -97,7 +98,6 @@ export default function SocialGenModal({ ctx }: PropTypes) {
               src={imageSrc}
               onLoad={() => setLoading(false)}
               onError={() => setLoading(false)}
-              alt={parameters.buttonLabel}
             />
             {loading &&
               <div className={s.loading}><Loader color={'#ffffff'} size={40} /></div>
