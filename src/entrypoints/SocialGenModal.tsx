@@ -113,7 +113,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
                           id={id}
                           name={id}
                           value={value}
-                          cols={5}
+                          rows={5}
                           onChange={({ target: { value } }) => handleChange(id, value)}
                         />
                       </>
