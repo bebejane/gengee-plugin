@@ -1,6 +1,6 @@
 import s from './SocialGenModal.module.scss'
 import { RenderModalCtx } from 'datocms-plugin-sdk';
-import { Canvas, Button, Form, TextField, SelectField, TextInput } from 'datocms-react-ui';
+import { Canvas, Button, Form, TextField, SelectField } from 'datocms-react-ui';
 import { baseUrl, generateSourceUrl } from '../utils';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'usehooks-ts';

@@ -1,5 +1,5 @@
 import { RenderManualFieldExtensionConfigScreenCtx } from 'datocms-plugin-sdk';
-import { Canvas, Form, TextField, SelectField } from 'datocms-react-ui';
+import { Canvas, Form, TextField, SelectField, Spinner } from 'datocms-react-ui';
 import { useCallback, useEffect, useState } from 'react';
 import { baseUrl } from '../utils';
 
@@ -9,7 +9,7 @@ export type PropTypes = {
 
 export default function SocialGenConfigScreen({ ctx }: PropTypes) {
 
-  const [templates, setTemplates] = useState<any[]>([])
+  const [templates, setTemplates] = useState<any[] | undefined>()
   const [formValues, setFormValues] = useState<Partial<ConfigParameters>>(ctx.parameters);
 
   const saveParameter = useCallback((field: string, value: string | boolean) => {
@@ -29,7 +29,10 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
     })()
   }, [])
 
-  const templateOptions = templates?.map(({ config: { id: value, name: label } }) => ({ label, value }))
+  if (!templates)
+    return <Canvas ctx={ctx}><Spinner /></Canvas>
+
+  const templateOptions = templates.map(({ config: { id: value, name: label } }) => ({ label, value }))
 
   return (
     <Canvas ctx={ctx}>
