@@ -48,20 +48,6 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
           }}
         />
         <TextField
-          id="width"
-          name="width"
-          label="Width"
-          value={formValues.width}
-          onChange={(value) => saveParameter('width', value)}
-        />
-        <TextField
-          id="height"
-          name="height"
-          label="Height"
-          value={formValues.height}
-          onChange={(value) => saveParameter('height', value)}
-        />
-        <TextField
           id="button-label"
           name="button-label"
           label="Button label"

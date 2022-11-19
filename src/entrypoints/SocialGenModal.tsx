@@ -1,6 +1,6 @@
 import s from './SocialGenModal.module.scss'
 import { RenderModalCtx } from 'datocms-plugin-sdk';
-import { Canvas, Button, Form, TextField } from 'datocms-react-ui';
+import { Canvas, Button, Form, TextField, SelectField } from 'datocms-react-ui';
 import { baseUrl, generateSourceUrl } from '../utils';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'usehooks-ts';
@@ -13,7 +13,7 @@ export type PropTypes = {
 export default function SocialGenModal({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters & { fields: Fields | undefined }
-  const { template, width, height } = parameters;
+  const { template } = parameters;
   const [src, setSrc] = useState<string | undefined>();
   const imageSrc = useDebounce<string | undefined>(src, 400)
   const [fields, setFields] = useState<Fields | undefined>();
@@ -50,12 +50,12 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     if (template === undefined || dFields === undefined)
       return
 
-    const src = generateSourceUrl(template, { fields: dFields, dimensions: { width, height } })
+    const src = generateSourceUrl(template, { fields: dFields })
 
     setLoading(true)
     setSrc(src)
 
-  }, [dFields, template, width, height])
+  }, [dFields, template])
 
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
           <div className={s.fields}>
             <Form>
               {fields && Object.keys(fields).map(id => {
-                const { type, label, value } = fields[id]
+                const { type, label, value, options } = fields[id]
 
                 switch (type) {
                   case 'text':
@@ -110,6 +110,19 @@ export default function SocialGenModal({ ctx }: PropTypes) {
                         <div>{value && <img alt="thumb" src={`${value}?w=50`} />}</div>
                         <Button onClick={() => handleSelectImage(id)}>Select image...</Button>
                       </div>
+                    )
+                  case 'select':
+                    return (
+                      <SelectField
+                        id={id}
+                        name={id}
+                        label={label}
+                        value={options?.find(o => o.value === fields[id].value)}
+                        selectInputProps={{ isMulti: false, options }}
+                        onChange={(newValue: any) => {
+                          handleChange(id, newValue?.value as string)
+                        }}
+                      />
                     )
                   default:
                     return null;
