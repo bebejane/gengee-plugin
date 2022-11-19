@@ -1,15 +1,14 @@
 .modal {
-  --height: calc(500px - 1rem);
+  width: 100%;
   display: flex;
   flex-direction: column;
-
+  --height: 400px;
 
   .editor {
     display: flex;
     flex-direction: row;
-    min-height: var(--height);
-    max-height: var(--height);
-    overflow: hidden;
+    flex: 1 1 auto;
+    width: 100%;
 
     @media screen and (max-width: 768px) {
       flex-direction: column;
@@ -29,7 +28,7 @@
       align-items: center;
       justify-content: center;
       background-color: #000000;
-      height: var(--height);
+      //height: var(--height);
 
       img {
         width: 100%;
@@ -52,6 +51,7 @@
     }
 
     .fields {
+      position: relative;
       flex: 1 1 100%;
       min-height: 100%;
       height: 100%;
@@ -91,9 +91,11 @@
   }
 
   .buttons {
+    position: relative;
     display: flex;
     flex-direction: row;
     padding-top: 1rem;
+    flex: 1 1 auto;
 
     button {
       margin-right: 1rem;

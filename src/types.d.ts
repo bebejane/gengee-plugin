@@ -11,6 +11,6 @@ type Fields = {
 }
 
 type ConfigParameters = {
-  template: string | undefined,
+  templateId: string | undefined,
   buttonLabel: string
 };

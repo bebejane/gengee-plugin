@@ -41,7 +41,7 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
           name="template"
           id="template"
           label="Template"
-          value={templateOptions.find(t => t.value === formValues.template)}
+          value={templateOptions.find(t => t.value === formValues.templateId)}
           selectInputProps={{
             isMulti: false,
             options: templateOptions,

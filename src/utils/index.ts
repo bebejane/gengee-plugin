@@ -1,6 +1,7 @@
 export const isDev = document.location.hostname === 'localhost';
 export const baseUrl = 'https://social-gen.vercel.app'
 
-export const generateSourceUrl = (template: string, { fields }: { fields: Fields }) => {
-  return `${baseUrl}/api/generate?t=${template}&f=${encodeURIComponent(JSON.stringify(fields))}`
+export const generateSourceUrl = (template: any, { fields }: { fields: Fields }) => {
+  const { config } = template;
+  return `${baseUrl}/api/generate?t=${config.id}&f=${encodeURIComponent(JSON.stringify(fields))}`
 }

@@ -13,8 +13,10 @@ export type PropTypes = {
 export default function SocialGenModal({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters & { fields: Fields | undefined }
+  const { templateId } = parameters;
   const savedFields = { ...parameters.fields || {} }
-  const { template } = parameters;
+
+  const [template, setTemplate] = useState<any | undefined>();
   const [src, setSrc] = useState<string | undefined>();
   const imageSrc = useDebounce<string | undefined>(src, 400)
   const [fields, setFields] = useState<Fields | undefined>();
@@ -28,6 +30,17 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     setFields({ ...fields, [id]: { ...fields[id], value } })
   }
 
+  const handleSelectImage = async (id: string) => {
+    const upload = await ctx.selectUpload({ multiple: false })
+
+    if (!upload)
+      return
+    if (!upload.attributes.mime_type?.includes('image'))
+      return ctx.alert('File is not an image!')
+
+    handleChange(id, `${upload?.attributes.url}?w=${template?.config.width}`)
+  }
+
   const handleDownload = async () => {
     const blob = await fetch(src as string).then(res => res.blob());
     const url = URL.createObjectURL(blob);
@@ -37,16 +50,6 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  }
-
-  const handleSelectImage = async (id: string) => {
-    const upload = await ctx.selectUpload({ multiple: false })
-    if (!upload)
-      return
-    if (!upload.attributes.mime_type?.includes('image'))
-      return ctx.alert('File is not an image!')
-
-    handleChange(id, upload?.attributes.url)
   }
 
   useEffect(() => {
@@ -65,31 +68,40 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     (async () => {
       try {
         const templates: any[] = await (await fetch(`${baseUrl}/api/template/list`)).json()
-        const t = templates.find(t => t.config.id === template)
+        const template = templates.find(t => t.config.id === templateId)
 
-        if (!t)
-          return ctx.alert(`Template "${template}" not found!"`)
+        if (!template)
+          return ctx.alert(`Template "${templateId}" not found!"`)
 
         const mergedFields: Fields = {}
 
-        Object.keys(t.config.fields).forEach((k) => {
-          mergedFields[k] = { ...t.config.fields[k], ...parameters.fields?.[k] }
+        Object.keys(template.config.fields).forEach((k) => {
+          mergedFields[k] = { ...template.config.fields[k], ...parameters.fields?.[k] }
         })
 
+        setTemplate(template)
         setFields(mergedFields)
+
       } catch (err) {
         ctx.alert((err as Error).message)
       }
     })()
-  }, [template, setFields, ctx, parameters])
+  }, [templateId, setFields, ctx, parameters])
 
   return (
     <Canvas ctx={ctx}>
       <div className={s.modal}>
         <div className={s.editor}>
           <figure>
-            <img src={imageSrc} onLoad={() => setLoading(false)} onError={() => setLoading(false)} />
-            {loading && <div className={s.loading}><Loader color={'#ffffff'} size={40} /></div>}
+            <img
+              src={imageSrc}
+              onLoad={() => setLoading(false)}
+              onError={() => setLoading(false)}
+              alt={parameters.buttonLabel}
+            />
+            {loading &&
+              <div className={s.loading}><Loader color={'#ffffff'} size={40} /></div>
+            }
           </figure>
           <div className={s.fields}>
             <Form>

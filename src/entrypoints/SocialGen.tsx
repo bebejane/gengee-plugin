@@ -9,12 +9,12 @@ type PropTypes = {
 export default function SocialGen({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters;
-  const { template, buttonLabel } = parameters
+  const { templateId, buttonLabel } = parameters
 
   const handleOpenModal = async () => {
     try {
 
-      if (!template || !buttonLabel)
+      if (!templateId || !buttonLabel)
         throw new Error('Plugin not configured correctly!');
 
       const savedFields = ctx.item?.attributes[ctx.field.attributes.api_key] as string
