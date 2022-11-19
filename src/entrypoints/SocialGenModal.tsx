@@ -13,18 +13,21 @@ export type PropTypes = {
 export default function SocialGenModal({ ctx }: PropTypes) {
 
   const parameters = ctx.parameters as ConfigParameters & { fields: Fields | undefined }
+  const savedFields = { ...parameters.fields || {} }
   const { template } = parameters;
   const [src, setSrc] = useState<string | undefined>();
   const imageSrc = useDebounce<string | undefined>(src, 400)
   const [fields, setFields] = useState<Fields | undefined>();
   const dFields: Fields | undefined = useDebounce(fields, 400)
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const handleChange = (id: string, value: string) => {
-    if (fields === undefined) return
+    if (fields === undefined)
+      return
     setFields({ ...fields, [id]: { ...fields[id], value } })
   }
+
   const handleDownload = async () => {
     const blob = await fetch(src as string).then(res => res.blob());
     const url = URL.createObjectURL(blob);
@@ -57,7 +60,6 @@ export default function SocialGenModal({ ctx }: PropTypes) {
 
   }, [dFields, template])
 
-
   useEffect(() => {
 
     (async () => {
@@ -81,14 +83,13 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     })()
   }, [template, setFields, ctx, parameters])
 
-
   return (
     <Canvas ctx={ctx}>
       <div className={s.modal}>
         <div className={s.editor}>
           <figure>
             <img src={imageSrc} onLoad={() => setLoading(false)} onError={() => setLoading(false)} />
-            {loading && <div className={s.loading}><Loader color={'#ffffff'} size={20} /></div>}
+            {loading && <div className={s.loading}><Loader color={'#ffffff'} size={40} /></div>}
           </figure>
           <div className={s.fields}>
             <Form>
@@ -135,7 +136,11 @@ export default function SocialGenModal({ ctx }: PropTypes) {
           <Button fullWidth={true} onClick={handleDownload} disabled={loading}>
             Download
           </Button>
-          <Button fullWidth={true} onClick={() => ctx.resolve(fields)}>
+          <Button
+            fullWidth={true}
+            onClick={() => ctx.resolve(fields)}
+            disabled={!fields || JSON.stringify(savedFields) === JSON.stringify(fields)}
+          >
             Save
           </Button>
         </div>
