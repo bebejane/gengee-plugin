@@ -27,7 +27,7 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
         ctx.alert((err as Error).message)
       }
     })()
-  }, [])
+  }, [ctx])
 
   if (!templates)
     return <Canvas ctx={ctx}><Spinner /></Canvas>
@@ -47,7 +47,7 @@ export default function SocialGenConfigScreen({ ctx }: PropTypes) {
             options: templateOptions,
           }}
           onChange={(newValue) => {
-            saveParameter('template', newValue?.value as string)
+            saveParameter('templateId', newValue?.value as string)
           }}
         />
         <TextField
