@@ -58,6 +58,14 @@
       max-height: var(--height);
       overflow-y: scroll;
 
+      textarea {
+        padding: 10px;
+        width: calc(100% - 22px);
+        outline: none;
+        font-family: inherit;
+        border-color: var(--darker-border-color);
+      }
+
       .imageSelector {
         display: flex;
         flex-direction: row;
