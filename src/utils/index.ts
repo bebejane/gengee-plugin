@@ -3,5 +3,5 @@ export const baseUrl = 'https://social-gen.vercel.app'
 
 export const generateSourceUrl = (template: any, { fields }: { fields: Fields }) => {
   const { config } = template;
-  return `${baseUrl}/api/generate?t=${config.id}&f=${encodeURIComponent(JSON.stringify(fields))}`
+  return `${baseUrl}/api/generate?t=${config.id}&f=${btoa(JSON.stringify(fields))}`
 }
