@@ -1,8 +1,8 @@
 .modal {
+  --size: 50%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  --size: 50%;
 
   .editor {
     display: flex;
