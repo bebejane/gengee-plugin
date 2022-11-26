@@ -40,7 +40,8 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     if (!upload.attributes.mime_type?.includes('image'))
       return ctx.alert('File is not an image!')
 
-    handleChange(id, `${upload?.attributes.url}`)
+    const format = upload?.attributes.url.split('.').pop()
+    handleChange(id, `${upload?.attributes.url}?fm=${format}`)
   }
 
   const handleDownload = async () => {
