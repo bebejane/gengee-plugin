@@ -1,5 +1,5 @@
 export const isDev = document.location.hostname === 'localhost';
-export const baseUrl = 'https://social-gen.vercel.app'
+export const baseUrl = 'https://social-gen.up.railway.app'
 
 export const Base64 = {
   encode: (obj: any): string => btoa(unescape(encodeURIComponent(JSON.stringify(obj)))),
