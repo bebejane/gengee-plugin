@@ -21,6 +21,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
   const [src, setSrc] = useState<string | undefined>();
   const imageSrc = useDebounce<string | undefined>(src, 400)
   const [fields, setFields] = useState<Fields | undefined>();
+  const [generating, setGenerating] = useState<boolean>(false);
   const dFields: Fields | undefined = useDebounce(fields, 400)
 
   const [loading, setLoading] = useState(true)
@@ -43,6 +44,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
   }
 
   const handleDownload = async () => {
+    setGenerating(true)
     const dateStr = format(new Date(), 'yyyy-MM-dd HH_mm')
     const filename = `${parameters.buttonLabel || 'Image'} (${dateStr}).png`
     const blob = await fetch(src as string).then(res => res.blob());
@@ -53,6 +55,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    setGenerating(false)
   }
 
   useEffect(() => {
@@ -162,7 +165,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
         </div>
         <div className={s.buttons}>
           <Button fullWidth={true} onClick={handleDownload} disabled={loading}>
-            Download
+            {generating ? <>Preparing image....</> : <>Download</>}
           </Button>
           <Button
             fullWidth={true}
