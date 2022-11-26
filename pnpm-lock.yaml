@@ -6,6 +6,7 @@ specifiers:
   '@types/react-dom': ^18.0.9
   classnames: ^2.3.2
   cross-env: ^7.0.3
+  date-fns: ^2.29.3
   datocms-plugin-sdk: ^0.6.12
   datocms-react-ui: ^0.6.14
   react: ^18.2.0
@@ -22,6 +23,7 @@ dependencies:
   '@types/react': 18.0.25
   '@types/react-dom': 18.0.9
   classnames: 2.3.2
+  date-fns: 2.29.3
   datocms-plugin-sdk: 0.6.12
   datocms-react-ui: 0.6.14_2zx2umvpluuhvlq44va5bta2da
   react: 18.2.0
@@ -3994,6 +3996,11 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.7.0
+    dev: false
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
     dev: false
 
   /datocms-plugin-sdk/0.6.12:

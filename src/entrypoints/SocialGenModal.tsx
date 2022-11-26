@@ -4,6 +4,7 @@ import { Canvas, Button, Form, TextField, SelectField } from 'datocms-react-ui';
 import { baseUrl, generateSourceUrl } from '../utils';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'usehooks-ts';
+import format from 'date-fns/format';
 import Loader from "react-spinners/MoonLoader";
 
 export type PropTypes = {
@@ -42,11 +43,13 @@ export default function SocialGenModal({ ctx }: PropTypes) {
   }
 
   const handleDownload = async () => {
+    const dateStr = format(new Date(), 'yyyy-MM-dd HH_mm')
+    const filename = `${parameters.buttonLabel || 'Image'} (${dateStr}).png`
     const blob = await fetch(src as string).then(res => res.blob());
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = parameters.buttonLabel ? `${parameters.buttonLabel}.png` : 'Image.png';
+    a.download = filename
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
