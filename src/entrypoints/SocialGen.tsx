@@ -39,7 +39,7 @@ export default function SocialGen({ ctx }: PropTypes) {
   return (
     <Canvas ctx={ctx}>
       <Button type="button" onClick={handleOpenModal}>
-        {buttonLabel || 'Generate Image'}
+        {buttonLabel || 'Generate image...'}
       </Button>
     </Canvas>
   );

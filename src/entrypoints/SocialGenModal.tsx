@@ -40,7 +40,7 @@ export default function SocialGenModal({ ctx }: PropTypes) {
     if (!upload.attributes.mime_type?.includes('image'))
       return ctx.alert('File is not an image!')
 
-    handleChange(id, `${upload?.attributes.url}?w=${template?.config.width}`)
+    handleChange(id, `${upload?.attributes.url}`)
   }
 
   const handleDownload = async () => {
@@ -63,7 +63,6 @@ export default function SocialGenModal({ ctx }: PropTypes) {
       return
 
     const src = generateSourceUrl(template, { fields: dFields })
-    console.log(src);
 
     setLoading(true)
     setSrc(src)
